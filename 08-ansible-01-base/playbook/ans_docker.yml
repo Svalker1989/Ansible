@@ -1,0 +1,21 @@
+---
+- name: Pull and image and start the container
+  hosts: localhost
+  tasks:
+    - name: Pull image
+      community.docker.docker_image_pull:
+        name: python
+        tag: 3.12
+    - name: Start container
+      community.docker.docker_container:
+        cleanup: true
+        command: python --version
+        detach: false
+        image: python:3.12
+        name: my-python-container
+        output_logs: true
+      register: docker_container_output
+
+    - name: Show output
+      ansible.builtin.debug:
+        msg: "{{ docker_container_output.container.Output }}"
