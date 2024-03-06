@@ -9,3 +9,8 @@ services:
     image: centos:7
     command: tail -f /dev/null
     container_name: centos
+
+  fed:
+    image: pycontribs/fedora
+    command: tail -f /dev/null
+    container_name: fedora
