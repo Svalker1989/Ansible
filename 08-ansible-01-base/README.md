@@ -8,15 +8,15 @@
 
 ## Основная часть
 
-1. Попробуйте запустить playbook на окружении из `test.yml`, зафиксируйте значение, которое имеет факт `some_fact` для указанного хоста при выполнении playbook.
+1. Попробуйте запустить playbook на окружении из `test.yml`, зафиксируйте значение, которое имеет факт `some_fact` для указанного хоста при выполнении playbook.  
 **Ответ: "msg": 12**
 `sudo ansible-playbook -i ./inventory/test.yml site.yml`
-2. Найдите файл с переменными (group_vars), в котором задаётся найденное в первом пункте значение, и поменяйте его на `all default fact`.
+2. Найдите файл с переменными (group_vars), в котором задаётся найденное в первом пункте значение, и поменяйте его на `all default fact`.  
 **Файл: [examp.yml](https://github.com/Svalker1989/Ansible/blob/master/08-ansible-01-base/playbook/group_vars/all/examp.yml)**
-3. Воспользуйтесь подготовленным (используется `docker`) или создайте собственное окружение для проведения дальнейших испытаний.
+3. Воспользуйтесь подготовленным (используется `docker`) или создайте собственное окружение для проведения дальнейших испытаний.  
 **docker compose файл: [docker-compose.yml](https://github.com/Svalker1989/Ansible/blob/master/08-ansible-01-base/playbook/docker-compose.yml)**
 `sudo docker compose -f ./docker-compose.yml up -d`
-4. Проведите запуск playbook на окружении из `prod.yml`. Зафиксируйте полученные значения `some_fact` для каждого из `managed host`.
+4. Проведите запуск playbook на окружении из `prod.yml`. Зафиксируйте полученные значения `some_fact` для каждого из `managed host`.  
 **Ответ:**  
 ![](https://github.com/Svalker1989/Ansible/blob/master/08-ansible-01-base/Z1_4.PNG)  
 5. Добавьте факты в `group_vars` каждой из групп хостов так, чтобы для `some_fact` получились значения: для `deb` — `deb default fact`, для `el` — `el default fact`.
