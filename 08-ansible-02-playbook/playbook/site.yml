@@ -7,30 +7,85 @@
       ansible.builtin.service:
         name: clickhouse-server
         state: restarted
-  tasks:
-    - block:
-        - name: Get clickhouse distrib
-          ansible.builtin.get_url:
-            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
-            dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
-          with_items: "{{ clickhouse_packages }}"
-      rescue:
-        - name: Get clickhouse distrib
-          ansible.builtin.get_url:
-            url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
-            dest: "./clickhouse-common-static-{{ clickhouse_version }}.rpm"
-    - name: Install clickhouse packages
+    - name: Restart vector service
       become: true
-      ansible.builtin.yum:
-        name:
-          - clickhouse-common-static-{{ clickhouse_version }}.rpm
-          - clickhouse-client-{{ clickhouse_version }}.rpm
-          - clickhouse-server-{{ clickhouse_version }}.rpm
-      notify: Start clickhouse service
-    - name: Flush handlers
-      meta: flush_handlers
-    - name: Create database
-      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
-      register: create_db
-      failed_when: create_db.rc != 0 and create_db.rc !=82
-      changed_when: create_db.rc == 0
+      ansible.builtin.systemd:
+        name: vector
+        state: restarted
+        daemon_reload: true
+  tasks:
+    - name: Clickhouse
+      become: true
+      block:
+        - name: Install by APT | Apt-key add repo key
+          ansible.builtin.apt_key:
+            keyserver: "{{ clickhouse_repo_keyserver }}"
+            id: "{{ clickhouse_repo_key }}"          
+
+        - name: Install by APT | Remove old repo
+          ansible.builtin.apt_repository:
+            repo: "{{ clickhouse_repo_old }}"
+            state: absent
+          when: clickhouse_repo_old is defined          
+
+        - name: Install by APT | Repo installation
+          ansible.builtin.apt_repository:
+            repo: "{{ clickhouse_repo }}"
+            state: present          
+
+        - name: Install clickhouse packages
+          ansible.builtin.apt:
+            name:
+              - clickhouse-common-static
+              - clickhouse-client
+              - clickhouse-server          
+          notify: Start clickhouse service
+
+        - name: Flush handlers
+          ansible.builtin.meta: flush_handlers
+        - name: Create database
+          ansible.builtin.command: "clickhouse-client -q 'create database sample;'"
+          register: create_db
+          failed_when: 'create_db.rc != 0 and create_db.rc != 82'
+          changed_when: create_db.rc == 0
+
+- name: Vector
+  hosts: vector
+  handlers:
+    - name: Restart vector service
+      become: true
+      ansible.builtin.systemd:
+        name: vector
+        state: restarted
+        daemon_reload: true
+  tasks:
+    - name: Install vector
+      become: true
+      block:
+        - name: Install Vector | prepare architecture name when x64
+          ansible.builtin.set_fact:
+            architecture_name: amd64
+          when: ansible_architecture == 'x86_64'
+        - name: Install Vector | prepare architecture name when else
+          ansible.builtin.set_fact:
+            architecture_name: undefined
+          when: ansible_architecture != 'x86_64'
+        - name: Install Vector | DEB install
+          become: true
+          ansible.builtin.apt:
+            deb: https://packages.timber.io/vector/{{ vector_version }}/vector_{{ vector_version }}-1_{{ architecture_name }}.deb
+            state: present
+          notify: restart vector service
+
+    - name: Configure vector
+      block:
+        - name: Configure Vector | ensure what directory exists
+          ansible.builtin.file:
+            path: "{{ vector_config_dir }}"
+            state: directory
+            mode: '0744'
+        - name: Configure Vector | Template config
+          ansible.builtin.template:
+            src: vector.yml.j2
+            mode: '0744'
+            dest: "{{ vector_config_dir }}/vector.yml"

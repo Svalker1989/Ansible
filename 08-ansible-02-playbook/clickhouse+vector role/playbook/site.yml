@@ -1,0 +1,9 @@
+---
+- name: Assert clickhouse role
+  hosts: all
+  roles:
+    - ansible-clickhouse
+- name: Assert vector role
+  hosts: vector
+  roles:
+    - vector-role    
