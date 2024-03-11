@@ -75,9 +75,10 @@
           ansible.builtin.apt:
             deb: https://packages.timber.io/vector/{{ vector_version }}/vector_{{ vector_version }}-1_{{ architecture_name }}.deb
             state: present
-          notify: restart vector service
+          notify: Restart vector service
 
     - name: Configure vector
+      become: true
       block:
         - name: Configure Vector | ensure what directory exists
           ansible.builtin.file:
@@ -89,3 +90,10 @@
             src: vector.yml.j2
             mode: '0744'
             dest: "{{ vector_config_dir }}/vector.yml"
+          notify: Restart vector service
+        - name: Configure Service | Template systemd unit          
+          ansible.builtin.template:
+            src: vector.service.j2
+            dest: /etc/systemd/system/vector.service
+            mode: '0744'
+          notify: Restart vector service
