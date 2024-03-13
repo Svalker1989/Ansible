@@ -7,14 +7,14 @@
 
 ## Основная часть
 
-1. Допишите playbook: нужно сделать ещё один play, который устанавливает и настраивает LightHouse.
-[site.yml]()
+1. Допишите playbook: нужно сделать ещё один play, который устанавливает и настраивает LightHouse.  
+[site.yml](https://github.com/Svalker1989/Ansible/blob/master/08-ansible-03-yandex/playbook/site.yml)
 2. При создании tasks рекомендую использовать модули: `get_url`, `template`, `yum`, `apt`.
 3. Tasks должны: скачать статику LightHouse, установить Nginx или любой другой веб-сервер, настроить его конфиг для открытия LightHouse, запустить веб-сервер.
-4. Подготовьте свой inventory-файл `prod.yml`.
-[prod.yml]()
-5. Запустите `ansible-lint site.yml` и исправьте ошибки, если они есть.
-![Z1]()  
+4. Подготовьте свой inventory-файл `prod.yml`.  
+[prod.yml](https://github.com/Svalker1989/Ansible/blob/master/08-ansible-03-yandex/playbook/inventory/prod.yml)
+5. Запустите `ansible-lint site.yml` и исправьте ошибки, если они есть.  
+![](https://github.com/Svalker1989/Ansible/blob/master/08-ansible-03-yandex/Z1.PNG)  
 6. Попробуйте запустить playbook на этом окружении с флагом `--check`.
 7. Запустите playbook на `prod.yml` окружении с флагом `--diff`. Убедитесь, что изменения на системе произведены.
 8. Повторно запустите playbook с флагом `--diff` и убедитесь, что playbook идемпотентен.
