@@ -1,0 +1,26 @@
+---
+vector_version: 0.21.1
+vector_config_dir: "{{ ansible_user_dir }}/vector_config"
+
+vector_config:
+  sources:
+    sample_file:
+      type: file
+      read_from: beginning
+      ignore_older: 600
+      include: 
+        - /home/str/logs/*.log
+  sinks:
+    to_clickhouse:
+      type: clickhouse
+      inputs:
+        - sample_file
+      endpoint: http://10.0.1.26:8123
+      database: sample
+      table: some_log
+      auth: 
+        password: logger
+        user: logger
+        strategy: basic
+      skip_unknown_fields: true
+      compression: gzip
