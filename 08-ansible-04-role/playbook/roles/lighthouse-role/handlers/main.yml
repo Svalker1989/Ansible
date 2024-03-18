@@ -1,0 +1,11 @@
+---
+- name: Start-nginx
+  become: true
+  ansible.builtin.command: nginx
+  register: nginx_output
+  changed_when: nginx_output.rc != 0
+- name: Reload-nginx
+  become: true
+  ansible.builtin.command: nginx -s reload
+  register: nginx_output
+  changed_when: nginx_output.rc == 0

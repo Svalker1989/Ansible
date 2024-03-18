@@ -6,4 +6,4 @@
 - name: Assert vector role
   hosts: vector
   roles:
-    - vector-role    
+    - vector-role

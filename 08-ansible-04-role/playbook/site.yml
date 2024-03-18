@@ -1,0 +1,22 @@
+---
+- name: Assert clickhouse role
+  hosts: clickhouse
+  roles:
+    - ansible-clickhouse
+
+- name: Assert lighthouse role
+  hosts: lighthouse
+  pre_tasks:
+    - name: Lighthouse | install dependencies
+      become: true
+      ansible.builtin.package:
+        name: git
+        state: present
+        update_cache: true
+  roles:
+    - lighthouse-role
+
+- name: Assert vector role
+  hosts: vector
+  roles:
+    - vector-role

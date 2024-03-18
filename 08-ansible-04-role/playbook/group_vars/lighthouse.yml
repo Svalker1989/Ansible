@@ -1,0 +1,4 @@
+---
+lighthouse_vcs: "https://github.com/VKCOM/lighthouse.git"
+lighthouse_location_dir: "/home/{{ ansible_user_id }}/lighthouse"
+lighthouse_nginx_user: "root"

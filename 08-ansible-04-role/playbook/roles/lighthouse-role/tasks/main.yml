@@ -1,0 +1,14 @@
+---
+- name: Lighthouse| Install nginx
+  ansible.builtin.include_tasks:
+    file: install_nginx.yml
+- name: Lighthouse| Config nginx
+  ansible.builtin.include_tasks:
+    file: configure_nginx.yml
+
+- name: Lighthouse | Install package
+  ansible.builtin.include_tasks:
+    file: install_lighthouse.yml
+- name: Lighthouse | Configure Lighthouse
+  ansible.builtin.include_tasks:
+    file: configure_lighthouse.yml

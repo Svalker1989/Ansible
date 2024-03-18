@@ -1,0 +1,7 @@
+---
+- name: NGINX | Install NGINX
+  become: true
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+  notify: Start-nginx
