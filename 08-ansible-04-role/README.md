@@ -16,7 +16,7 @@
 
 **Что нужно сделать**
 
-1. Создайте в старой версии playbook файл `requirements.yml` и заполните его содержимым:
+1. Создайте в старой версии playbook файл `requirements.yml` и заполните его содержимым:  
 [requirements.yml](https://github.com/Svalker1989/Ansible/blob/master/08-ansible-04-role/playbook/requirements.yml)
    ```yaml
    ---
@@ -27,8 +27,8 @@
    ```
 
 2. При помощи `ansible-galaxy` скачайте себе эту роль.
-3. Создайте новый каталог с ролью при помощи `ansible-galaxy role init vector-role`.
-![](https://github.com/Svalker1989/Ansible/blob/master/08-ansible-04-role/Z1.PNG)
+3. Создайте новый каталог с ролью при помощи `ansible-galaxy role init vector-role`.  
+![](https://github.com/Svalker1989/Ansible/blob/master/08-ansible-04-role/Z1.PNG)  
 4. На основе tasks из старого playbook заполните новую role. Разнесите переменные между `vars` и `default`. 
 5. Перенести нужные шаблоны конфигов в `templates`.
 6. Опишите в `README.md` обе роли и их параметры. Пример качественной документации ansible role [по ссылке](https://github.com/cloudalchemy/ansible-prometheus).
