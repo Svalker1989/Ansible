@@ -17,7 +17,7 @@
 **Что нужно сделать**
 
 1. Создайте в старой версии playbook файл `requirements.yml` и заполните его содержимым:
-
+[requirements.yml](https://github.com/Svalker1989/Ansible/blob/master/08-ansible-04-role/playbook/requirements.yml)
    ```yaml
    ---
      - src: git@github.com:AlexeySetevoi/ansible-clickhouse.git
