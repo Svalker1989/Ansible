@@ -1,0 +1,23 @@
+---
+
+namespace: str
+name: lighthouse
+version: 1.0.0
+readme: README.md
+authors:
+  - Str
+description: null
+license:
+  - GPL-3.0-or-later
+
+#license_file: COPYING
+tags:
+  - lighthouse
+
+repository: https://github.com/Svalker1989/ansible-lighthouse-role.git
+documentation: https://docs.ansible.com/ansible/latest/collections/community/crypto/
+homepage: https://github.com/Svalker1989/ansible-lighthouse-role.git
+issues: https://github.com/Svalker1989/ansible-lighthouse-role/issues
+build_ignore:
+  - .gitignore
+  - changelogs/.plugin-cache.yaml
