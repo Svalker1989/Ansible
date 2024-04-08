@@ -1,0 +1,12 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+  - name: list_file
+    command: "ls {{ vector_config_dir }}/"
+    register: list_file
+  - name: Verify vector config exist
+    assert:
+      that:
+        - "'vector.yml' in list_file.stdout_lines"
+

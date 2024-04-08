@@ -1,0 +1,8 @@
+---
+- name: restart vector service
+  become: true
+  ansible.builtin.service:
+    name: vector
+    state: restarted
+  register: service_status
+#    daemon_reload: true

@@ -1,0 +1,24 @@
+---
+- name: Install by YUM | Ensure vector repo GPG key imported
+  rpm_key:
+    state: present
+    key: "{{ vector_repo_key }}"
+  become: true
+
+- name: Install by YUM | Ensure vector repo installed
+  yum_repository:
+    name: vector
+    file: vector
+    description: "Vector repo"
+    baseurl: "{{ vector_repo }}"
+    enabled: yes
+    gpgcheck: 1
+    gpgkey: "{{ vector_repo_key }}"
+  become: true
+
+- name: Install by YUM | Ensure vector package installed (latest)
+  dnf:
+    name: vector-{{ vector_version }}
+    state: present
+  become: true
+

@@ -1,0 +1,4 @@
+---
+# vars file for vector_role
+vector_repo: "https://yum.vector.dev/stable/vector-0/x86_64/"
+vector_repo_key: https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public
