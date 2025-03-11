@@ -1,0 +1,12 @@
+---
+- name: httpd playbook
+  hosts: strservers
+  gather_facts: true
+  roles:
+    - /root/ansible/httpd
+  tasks: 
+  - name: check
+    uri:
+      url: http://localhost:80
+...
+

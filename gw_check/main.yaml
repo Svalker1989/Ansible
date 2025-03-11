@@ -1,0 +1,22 @@
+---
+- name: test connectivity
+  hosts: gw
+  gather_facts: true
+  vars:
+    gw: "192.168.0.1"
+  tasks:
+    - name: "Get GW"
+      local_action:
+        module: ansible.builtin.lineinfile #модуль позволяет вставлять строки в файл
+        line: "{{ ansible_hostname }} (IP: {{ ansible_default_ipv4.address }}): {{ ansible_default_ipv4.gateway }}"
+        path: "{{ playbook_dir }}/gw_report" # имя файла для создания
+        create: yes #если файла не существует, то создаст
+      when: ansible_default_ipv4.gateway !=  gw # выполняется только если переменные не равны
+      loop: "{{ groups['gw'] | list | flatten  }}" # цикл, берет все хосты из группы gw и выполняет такс при выполнении условия. К элементам цикла обрачаться как item/
+      # run_once: True #выполнит таск один раз
+
+    # - name: msg
+    #   ansible.builtin.debug:
+    #     msg: "{{ ansible_default_ipv4.address }}"
+    #   loop: "{{ groups['gw'] | list | flatten  }}"
+    #   # run_once: True
